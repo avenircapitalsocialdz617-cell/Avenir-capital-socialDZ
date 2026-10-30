@@ -54,7 +54,7 @@ const MOOV_NUM="0104217547";
 const MTN_NUM="0545576710";
 const SUPPORT="https://wa.me/message/ABZ2BRFJPVIOE1";
 const WA_GROUP="https://chat.whatsapp.com/GJkaaZhk51y0VpbNPfEbms?s=cl&p=a&mlu=4&ilr=4&iam=2";
-const BASE_REF_LINK="https://nouveauprojetavenir-debug.github.io/Nouveau-projet-avenir-capital-/";
+const BASE_REF_LINK="https://avenircapitalsocialdz617-cell.github.io/Avenir-capital-socialDZ/";
 
 const VIP=[
   {n:"VIP1 Sac Découverte", p:5000, d:500, days:7, total:8500, benef:3500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
@@ -412,9 +412,17 @@ const pages={
     <div class="card">
       <p class="mu">Montant à envoyer :</p>
       <div class="num" style="color:var(--pr);margin-bottom:12px">${F(T.amt)}</div>
-      <p class="mu">Envoyez l'argent sur ce numéro ${m} :</p>
+      
+      <!-- Lien de paiement Jeko -->
+      <div style="background:rgba(16, 185, 129, 0.1); border: 1px solid var(--pr); border-radius:10px; padding:12px; margin-bottom:14px; text-align:center;">
+        <p class="mu" style="margin-bottom:8px">Veuillez payer pour Avenir en cliquant sur le lien :</p>
+        <a href="https://pay.jeko.africa/pl/4f580acc-5df9-440e-b168-6beb65823bea" target="_blank" class="btn btn-sm" style="background:var(--gold); color:#000; text-decoration:none; display:inline-block; font-weight:bold;">🔗 Ouvrir le lien de paiement Jeko</a>
+      </div>
+
+      <p class="mu">Ou envoyez directement l'argent sur ce numéro ${m} :</p>
       <div class="num" style="margin-bottom:12px">${num}</div>
       <button class="btn sec btn-sm" style="margin-bottom:14px" onclick="copyN('${num}')">📋 Copier le numéro</button>
+      
       <label>Votre numéro de téléphone expéditeur</label><input id="pn" type="tel" placeholder="Ex: 0700000000">
       <label>ID de transaction / Référence</label><input id="tx" placeholder="Ex: TX12345678">
       <div id="err" class="err"></div>
