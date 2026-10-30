@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avenir Capital</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .balance-box {
+      text-align: center;
+      padding: 15px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 8px;
+      border: 1px solid var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .balance-amount {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--success);
+      margin-top: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--primary);
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+    }
+
+    .plans-grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .plan-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      background: var(--bg-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .plan-info h3 {
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .plan-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .plan-btn {
+      width: auto;
+      padding: 8px 15px;
+      font-size: 0.85rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Avenir Capital</h1>
+      <p>Plateforme d'investissement</p>
+    </header>
+
+    <!-- ÉCRAN DE CONNEXION / INSCRIPTION -->
+    <div id="auth-screen" class="card">
+      <h2>Connexion</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="phone">Numéro de téléphone</label>
+          <input type="tel" id="phone" placeholder="Ex: 0700000000" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn">Se connecter</button>
+      </form>
+    </div>
+
+    <!-- ÉCRAN PRINCIPAL (DASHBOARD) -->
+    <div id="dashboard-screen" class="hidden">
+      
+      <!-- Solde -->
+      <div class="card">
+        <div class="balance-box">
+          <div>Solde actuel</div>
+          <div class="balance-amount"><span id="user-balance">0</span> FCFA</div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('plans')">Investir</button>
+        <button class="tab-btn" onclick="switchTab('deposit')">Dépôt</button>
+        <button class="tab-btn" onclick="switchTab('withdraw')">Retrait</button>
+      </div>
+
+      <!-- SECTION PLANS D'INVESTISSEMENT -->
+      <div id="tab-plans" class="card">
+        <h2>Offres d'investissement</h2>
+        <div class="plans-grid">
+          <div class="plan-card">
+            <div class="plan-info">
+              <h3>Plan Bronze</h3>
+              <p>Investissement : 5 000 FCFA</p>
+              <p>Gains : +500 FCFA / jour</p>
+            </div>
+            <button class="btn plan-btn" onclick="invest(5000)">Souscrire</button>
+          </div>
+
+          <div class="plan-card">
+            <div class="plan-info">
+              <h3>Plan Argent</h3>
+              <p>Investissement : 10 000 FCFA</p>
+              <p>Gains : +1 200 FCFA / jour</p>
+            </div>
+            <button class="btn plan-btn" onclick="invest(10000)">Souscrire</button>
+          </div>
+
+          <div class="plan-card">
+            <div class="plan-info">
+              <h3>Plan Or</h3>
+              <p>Investissement : 25 000 FCFA</p>
+              <p>Gains : +3 500 FCFA / jour</p>
+            </div>
+            <button class="btn plan-btn" onclick="invest(25000)">Souscrire</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION DÉPÔT -->
+      <div id="tab-deposit" class="card hidden">
+        <h2>Faire un dépôt</h2>
+        <form id="deposit-form">
+          <div class="form-group">
+            <label for="deposit-method">Moyen de paiement</label>
+            <select id="deposit-method">
+              <option value="wave">Wave</option>
+              <option value="mtn">MTN Mobile Money</option>
+              <option value="moov">Moov Money</option>
+              <option value="orange">Orange Money</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deposit-amount">Montant (FCFA)</label>
+            <input type="number" id="deposit-amount" min="1000" placeholder="Ex: 5000" required>
+          </div>
+          <button type="submit" class="btn">Valider le dépôt</button>
+        </form>
+      </div>
+
+      <!-- SECTION RETRAIT -->
+      <div id="tab-withdraw" class="card hidden">
+        <h2>Demander un retrait</h2>
+        <form id="withdraw-form">
+          <div class="form-group">
+            <label for="withdraw-method">Moyen de réception</label>
+            <select id="withdraw-method">
+              <option value="wave">Wave</option>
+              <option value="mtn">MTN Mobile Money</option>
+              <option value="moov">Moov Money</option>
+              <option value="orange">Orange Money</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="withdraw-phone">Numéro de réception</label>
+            <input type="tel" id="withdraw-phone" placeholder="Numéro Mobile Money" required>
+          </div>
+          <div class="form-group">
+            <label for="withdraw-amount">Montant (FCFA)</label>
+            <input type="number" id="withdraw-amount" min="1000" placeholder="Ex: 2000" required>
+          </div>
+          <button type="submit" class="btn">Demander le retrait</button>
+        </form>
+      </div>
+
+      <!-- Historique -->
+      <div class="card">
+        <h2>Historique des transactions</h2>
+        <div id="transaction-history">
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Aucune transaction pour le moment.</p>
+        </div>
+      </div>
+
+      <button class="btn btn-danger" onclick="logout()" style="margin-top: 10px;">Déconnexion</button>
+
+    </div>
+  </div>
+
+  <script>
+    // Données de l'utilisateur stockées localement
+    let userData = JSON.parse(localStorage.getItem('avenir_user')) || {
+      isLoggedIn: false,
+      balance: 0,
+      history: []
+    };
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      if (userData.isLoggedIn) {
+        showDashboard();
+      }
+    });
+
+    // Connexion
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      userData.isLoggedIn = true;
+      saveData();
+      showDashboard();
+    });
+
+    // Déconnexion
+    function logout() {
+      userData.isLoggedIn = false;
+      saveData();
+      document.getElementById('auth-screen').classList.remove('hidden');
+      document.getElementById('dashboard-screen').classList.add('hidden');
+    }
+
+    // Afficher le Dashboard
+    function showDashboard() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('dashboard-screen').classList.remove('hidden');
+      updateUI();
+    }
+
+    // Mise à jour de l'interface
+    function updateUI() {
+      document.getElementById('user-balance').innerText = userData.balance.toLocaleString();
+      renderHistory();
+    }
+
+    // Changement d'onglets
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-plans').classList.add('hidden');
+      document.getElementById('tab-deposit').classList.add('hidden');
+      document.getElementById('tab-withdraw').classList.add('hidden');
+
+      if (tabName === 'plans') {
+        document.getElementById('tab-plans').classList.remove('hidden');
+        event.target.classList.add('active');
+      } else if (tabName === 'deposit') {
+        document.getElementById('tab-deposit').classList.remove('hidden');
+        event.target.classList.add('active');
+      } else if (tabName === 'withdraw') {
+        document.getElementById('tab-withdraw').classList.remove('hidden');
+        event.target.classList.add('active');
+      }
+    }
+
+    // Gestion du Dépôt
+    document.getElementById('deposit-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const amount = parseInt(document.getElementById('deposit-amount').value);
+      const method = document.getElementById('deposit-method').value;
+
+      userData.balance += amount;
+      userData.history.unshift({
+        type: 'Dépôt (' + method.toUpperCase() + ')',
+        amount: '+' + amount.toLocaleString() + ' FCFA',
+        date: new Date().toLocaleDateString()
+      });
+
+      saveData();
+      updateUI();
+      alert('Dépôt réussi de ' + amount + ' FCFA !');
+      document.getElementById('deposit-form').reset();
+    });
+
+    // Gestion du Retrait
+    document.getElementById('withdraw-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const amount = parseInt(document.getElementById('withdraw-amount').value);
+      const method = document.getElementById('withdraw-method').value;
+
+      if (amount > userData.balance) {
+        alert('Solde insuffisant !');
+        return;
+      }
+
+      userData.balance -= amount;
+      userData.history.unshift({
+        type: 'Retrait (' + method.toUpperCase() + ')',
+        amount: '-' + amount.toLocaleString() + ' FCFA',
+        date: new Date().toLocaleDateString()
+      });
+
+      saveData();
+      updateUI();
+      alert('Demande de retrait envoyée !');
+      document.getElementById('withdraw-form').reset();
+    });
+
+    // Gestion des Investissements
+    function invest(amount) {
+      if (amount > userData.balance) {
+        alert('Solde insuffisant pour souscrire à ce plan. Effectuez un dépôt.');
+        return;
+      }
+
+      userData.balance -= amount;
+      userData.history.unshift({
+        type: 'Investissement',
+        amount: '-' + amount.toLocaleString() + ' FCFA',
+        date: new Date().toLocaleDateString()
+      });
+
+      saveData();
+      updateUI();
+      alert('Souscription effectuée avec succès !');
+    }
+
+    // Affichage de l'historique
+    function renderHistory() {
+      const historyContainer = document.getElementById('transaction-history');
+      if (userData.history.length === 0) {
+        historyContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Aucune transaction pour le moment.</p>';
+        return;
+      }
+
+      historyContainer.innerHTML = userData.history.map(item => `
+        <div class="history-item">
+          <div>
+            <strong>${item.type}</strong><br>
+            <small style="color: var(--text-muted);">${item.date}</small>
+          </div>
+          <div style="font-weight: bold; color: ${item.amount.startsWith('+') ? 'var(--success)' : 'var(--danger)'};">
+            ${item.amount}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Sauvegarde Locale
+    function saveData() {
+      localStorage.setItem('avenir_user', JSON.stringify(userData));
+    }
+  </script>
+</body>
+</html>
