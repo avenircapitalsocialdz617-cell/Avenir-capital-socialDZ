@@ -1,493 +1,541 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avenir Capital</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg-dark: #0f172a;
-      --card-bg: #1e293b;
-      --text-light: #f8fafc;
-      --text-muted: #94a3b8;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --border: #334155;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 500px;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    header h1 {
-      color: var(--primary);
-      font-size: 2rem;
-      letter-spacing: 1px;
-    }
-
-    header p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    }
-
-    .card h2 {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-    }
-
-    .balance-box {
-      text-align: center;
-      padding: 15px;
-      background: rgba(37, 99, 235, 0.1);
-      border-radius: 8px;
-      border: 1px solid var(--primary);
-      margin-bottom: 15px;
-    }
-
-    .balance-amount {
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--success);
-      margin-top: 5px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      font-size: 1rem;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--primary);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background-color: var(--primary);
-      color: white;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:hover {
-      background-color: var(--primary-hover);
-    }
-
-    .btn-danger {
-      background-color: var(--danger);
-    }
-
-    .plans-grid {
-      display: grid;
-      gap: 15px;
-    }
-
-    .plan-card {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 15px;
-      background: var(--bg-dark);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .plan-info h3 {
-      font-size: 1rem;
-      color: var(--primary);
-    }
-
-    .plan-info p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .plan-btn {
-      width: auto;
-      padding: 8px 15px;
-      font-size: 0.85rem;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .nav-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .history-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-    }
-
-    .history-item:last-child {
-      border-bottom: none;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Avenir Capital</title>
+<style>
+:root{--bg:#0a1a12;--card:#132e21;--tx:#f8fafc;--mu:#a3b8af;--pr:#10b981;--pr2:#059669;--bd:#1e4632;--wa:#10b981;--er:#ef4444;--gold:#f59e0b;--red:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1a12;--card:#132e21;--tx:#f8fafc;--mu:#a3b8af;--pr:#10b981;--pr2:#059669;--bd:#1e4632}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+#app{max-width:480px;margin:auto;padding:16px}
+h1,h2{margin:0 0 12px}h2{font-size:20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,var(--red),var(--pr));color:#fff;border-radius:16px;padding:18px;margin-bottom:14px}
+.hero small{opacity:.85}.hero b{display:block;font-size:30px}
+.reclamer-box{background:rgba(16, 185, 129, 0.1);border:2px solid var(--pr);border-radius:14px;padding:16px;margin-bottom:14px;text-align:center}
+.bonus-box{background:linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(16, 185, 129, 0.15));border:2px solid var(--gold);border-radius:14px;padding:16px;margin-bottom:14px;text-align:center}
+input,select{width:100%;padding:12px;margin:6px 0 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit}
+label{font-size:13px;color:var(--mu)}
+button{font:inherit;cursor:pointer}
+.btn{width:100%;padding:13px;border:0;border-radius:10px;background:var(--pr);color:#fff;font-weight:600;text-decoration:none;display:inline-block;text-align:center}
+.btn:disabled{background:#374151;cursor:not-allowed;opacity:0.7}
+.btn.sec{background:rgba(16,185,129,0.15);color:var(--pr)}.btn.out{background:none;border:1px solid var(--er);color:var(--er)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#d97706);color:#fff}
+.btn-wa{background:#25D366;color:#fff;margin-bottom:12px}
+.btn-sm{width:auto;padding:10px 20px;font-size:15px;border-radius:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.grid button{padding:16px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.li{display:flex;justify-content:space-between;width:100%;padding:14px;margin-bottom:8px;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);text-align:left}
+.tag{font-size:12px;padding:3px 9px;border-radius:20px;background:rgba(245, 158, 11, 0.2);color:var(--gold)}
+.mu{color:var(--mu);font-size:14px}.err{color:var(--er);font-size:14px;min-height:20px;margin:-4px 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.chips button{padding:8px 12px;border-radius:20px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.back{background:none;border:0;color:var(--pr);padding:0 0 10px;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:100}
+nav button{flex:1;padding:12px 2px;border:0;background:none;color:var(--mu);font-size:12px}nav button.on{color:var(--pr);font-weight:700}
+nav span{display:block;font-size:20px}
+.wave{border:2px solid var(--wa)}.off{opacity:.55}
+.num{font-size:22px;font-weight:700;letter-spacing:1px}
+.prod-img{width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:10px}
+</style>
 </head>
-<body>
+<body><div id="app"></div><nav id="nav"></nav>
 
-  <div class="container">
-    <header>
-      <h1>Avenir Capital</h1>
-      <p>Plateforme d'investissement</p>
-    </header>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc,setDoc,onSnapshot,collection,addDoc,runTransaction,updateDoc,getDocs} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <!-- ÉCRAN DE CONNEXION / INSCRIPTION -->
-    <div id="auth-screen" class="card">
-      <h2>Connexion</h2>
-      <form id="login-form">
-        <div class="form-group">
-          <label for="phone">Numéro de téléphone</label>
-          <input type="tel" id="phone" placeholder="Ex: 0700000000" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Mot de passe</label>
-          <input type="password" id="password" placeholder="••••••••" required>
-        </div>
-        <button type="submit" class="btn">Se connecter</button>
-      </form>
+const firebaseConfig={apiKey:"AIzaSyC8jUCtIrHrySXzNAXTdRTaCBTNgEirS8w",authDomain:"avenir-capital.firebaseapp.com",projectId:"avenir-capital",storageBucket:"avenir-capital.firebasestorage.app",messagingSenderId:"565430762059",appId:"1:565430762059:web:3c7d536d55d3277d35ebce"};
+
+const WAVE_NUM="0509302107";
+const MOOV_NUM="0104217547";
+const MTN_NUM="0545576710";
+const SUPPORT="https://wa.me/message/ABZ2BRFJPVIOE1";
+const WA_GROUP="https://chat.whatsapp.com/GJkaaZhk51y0VpbNPfEbms?s=cl&p=a&mlu=4&ilr=4&iam=2";
+const BASE_REF_LINK="https://nouveauprojetavenir-debug.github.io/Nouveau-projet-avenir-capital-/";
+
+const VIP=[
+  {n:"VIP1 Sac Découverte", p:5000, d:500, days:7, total:8500, benef:3500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP2 Sac Essentiel", p:10000, d:1000, days:15, total:25000, benef:15000, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP3 Sac Croissance", p:50000, d:1130, days:20, total:72600, benef:22600, img:"https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP4 Sac Premium", p:100000, d:2000, days:30, total:160000, benef:60000, img:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP5 Sac Excellence", p:200000, d:3000, days:45, total:450000, benef:250000, img:"https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP6 Sac Prestige", p:500000, d:2250, days:60, total:635000, benef:135000, img:"https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP7 Sac Élite", p:1000000, d:5000, days:90, total:1450000, benef:450000, img:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP8 Sac Premium", p:4000, d:343, days:12, total:8116, benef:4116, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
+  {n:"VIP9 Sac Excellence", p:3500, d:250, days:23, total:9250, benef:5750, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80"}
+];
+
+const METH=["Wave","MTN Money","Moov Money"];
+const auth=getAuth(initializeApp(firebaseConfig)),fs=getFirestore();
+const em=p=>p.replace(/\D/g,"")+"@avenir.app";
+let ud=null,recs=[],rets=[],buys=[],teamN=0,unsubs=[],P="login",T={};
+let hasGainsAvailable = false;
+
+const U=()=>ud&&{...ud,recs,rets,buys},F=n=>Number(n||0).toLocaleString("fr-FR")+" F",D=()=>new Date().toLocaleDateString("fr-FR");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=id=>document.getElementById(id).value.trim();
+
+function getUrlParam(param){
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+window.go = function(p,t){P=p;if(t)Object.assign(T,t);render();scrollTo(0,0)};
+function err(m){const e=document.getElementById("err");if(e)e.textContent=m}
+const msg=e=>({"auth/email-already-in-use":"Ce numéro est déjà inscrit.","auth/invalid-credential":"Numéro ou mot de passe incorrect.","auth/weak-password":"Mot de passe : 6 caractères minimum."}[e.code]||("Erreur : "+(e.code||e.message)));
+const back=(p="home")=>`<button class="back" onclick="go('${p}')">‹ Retour</button>`;
+const hist=(a,empty)=>a.length?a.map(x=>`<div class="card row"><div><b>${F(x.a)}</b><div class="mu">${x.m||'Retrait'} · ${x.t}</div></div><span class="tag">${x.s||"En attente"}</span></div>`).join(""):`<p class="mu">${empty}</p>`;
+
+window.copyN = function(num){
+  navigator.clipboard.writeText(num).then(()=>alert("✅ Numéro copié !")).catch(()=>alert(num))
+};
+
+window.copyLink = function(link){
+  navigator.clipboard.writeText(link).then(()=>alert("✅ Lien de parrainage copié !")).catch(()=>alert(link))
+};
+
+async function verifierGainsDisponibles(){
+  const user = auth.currentUser;
+  if (!user) return false;
+  try {
+    const buysRef = collection(fs, "users", user.uid, "buys");
+    const snap = await getDocs(buysRef);
+    if (snap.empty) return false;
+    const now = Date.now();
+    const msPerDay = 86400000;
+    for (const d of snap.docs) {
+      const buyData = d.data();
+      const createdAt = buyData.createdAt || now;
+      const lastClaim = buyData.lastClaim || createdAt;
+      const daysPaid = buyData.daysPaid || 0;
+      const maxDays = buyData.days;
+      if (daysPaid >= maxDays) continue;
+      const daysElapsed = Math.floor((now - lastClaim) / msPerDay);
+      if (daysElapsed > 0) return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+window.checkAndUpdateButton = async function(){
+  hasGainsAvailable = await verifierGainsDisponibles();
+  const btn = document.getElementById("btn-reclamer");
+  const msgEl = document.getElementById("gain-msg");
+  if (btn) btn.disabled = !hasGainsAvailable;
+  if (msgEl) {
+    if (hasGainsAvailable) {
+      msgEl.style.color = "var(--pr)";
+      msgEl.textContent = "✨ Des gains sont disponibles !";
+    } else {
+      msgEl.style.color = "var(--mu)";
+      msgEl.textContent = "⏰ Revenez demain matin pour réclamer";
+    }
+  }
+};
+
+window.reclamerMesGains = async function() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const msgEl = document.getElementById("gain-msg");
+  const btn = document.getElementById("btn-reclamer");
+  if (btn) btn.disabled = true;
+  if (msgEl) msgEl.textContent = "Calcul en cours...";
+
+  try {
+    const buysRef = collection(fs, "users", user.uid, "buys");
+    const snap = await getDocs(buysRef);
+    if (snap.empty) {
+      if (msgEl) msgEl.textContent = "Vous n'avez aucun sac d'investissement actif.";
+      hasGainsAvailable = false;
+      return;
+    }
+
+    let totalGain = 0;
+    const now = Date.now();
+    const msPerDay = 86400000;
+
+    for (const d of snap.docs) {
+      const buyData = d.data();
+      const createdAt = buyData.createdAt || now;
+      const lastClaim = buyData.lastClaim || createdAt;
+      const daysPaid = buyData.daysPaid || 0;
+      const maxDays = buyData.days;
+      if (daysPaid >= maxDays) continue;
+      const daysElapsed = Math.floor((now - lastClaim) / msPerDay);
+      if (daysElapsed > 0) {
+        const daysToPay = Math.min(daysElapsed, maxDays - daysPaid);
+        const gain = daysToPay * buyData.d;
+        totalGain += gain;
+        await updateDoc(doc(fs, "users", user.uid, "buys", d.id), {
+          daysPaid: daysPaid + daysToPay,
+          lastClaim: lastClaim + (daysToPay * msPerDay)
+        });
+      }
+    }
+
+    if (totalGain > 0) {
+      await runTransaction(fs, async t => {
+        const uRef = doc(fs, "users", user.uid);
+        const uSnap = await t.get(uRef);
+        const curBal = uSnap.data().bal || 0;
+        t.update(uRef, { bal: curBal + totalGain });
+      });
+      if (msgEl) {
+        msgEl.style.color = "var(--pr)";
+        msgEl.textContent = `🎉 +${F(totalGain)} ajouté à votre solde !`;
+      }
+    } else {
+      if (msgEl) {
+        msgEl.style.color = "var(--mu)";
+        msgEl.textContent = "🔒 Pas encore de gains. Revenez demain matin.";
+      }
+    }
+    hasGainsAvailable = false;
+  } catch (e) {
+    if (msgEl) {
+      msgEl.style.color = "var(--er)";
+      msgEl.textContent = "Erreur : " + e.message;
+    }
+    hasGainsAvailable = true;
+  }
+  setTimeout(() => checkAndUpdateButton(), 30000);
+};
+
+window.demanderPret = function() {
+  window.location.href = SUPPORT;
+};
+
+window.signup = async function(){
+  try {
+    const name = $('n'), phone = $('ph'), pw = $('pw'), ref = $('rf');
+    if(!name || !phone || !pw) return err("Veuillez remplir tous les champs.");
+    const res = await createUserWithEmailAndPassword(auth, em(phone), pw);
+    await setDoc(doc(fs, "users", res.user.uid), {
+      name, phone, ref, bal: 0, ts: Date.now()
+    });
+  } catch(e){ err(msg(e)); }
+};
+
+window.login = async function(){
+  try {
+    const phone = $('ph'), pw = $('pw');
+    if(!phone || !pw) return err("Veuillez remplir tous les champs.");
+    await signInWithEmailAndPassword(auth, em(phone), pw);
+  } catch(e){ err(msg(e)); }
+};
+
+window.logout = function(){ signOut(auth); };
+
+window.buy = async function(idx) {
+  const item = VIP[idx];
+  const user = auth.currentUser;
+  if (!user) return;
+  
+  try {
+    const buysRef = collection(fs, "users", user.uid, "buys");
+    const snap = await getDocs(buysRef);
+    let activeCount = 0;
+    
+    for (const d of snap.docs) {
+      const bData = d.data();
+      const maxDays = bData.days;
+      const daysPaid = bData.daysPaid || 0;
+      if (daysPaid < maxDays) {
+        activeCount++;
+      }
+    }
+    
+    if (activeCount > 0) {
+      alert("❌ Vous avez déjà un produit actif en cours. Veuillez attendre qu'il arrive à expiration avant d'en acheter un autre.");
+      return;
+    }
+
+    await runTransaction(fs, async t => {
+      const uRef = doc(fs, "users", user.uid);
+      const uSnap = await t.get(uRef);
+      const curBal = uSnap.data().bal || 0;
+      if (curBal < item.p) throw new Error("Solde insuffisant pour acheter ce sac.");
+      t.update(uRef, { bal: curBal - item.p });
+    });
+
+    await addDoc(collection(fs, "users", user.uid, "buys"), {
+      n: item.n, p: item.p, d: item.d, days: item.days,
+      t: D(), createdAt: Date.now(), lastClaim: Date.now(), daysPaid: 0
+    });
+    alert("✅ Achat du " + item.n + " réussi !");
+    setTimeout(() => checkAndUpdateButton(), 500);
+    go("achats");
+  } catch (e) {
+    err(e.message);
+  }
+};
+
+window.toMethod = function(){
+  const amt = Number($('a'));
+  if(!amt || amt < 1000) return err("Le montant minimum est de 1 000 F.");
+  go('method', {amt});
+};
+
+window.confirmPay = async function(m){
+  const user = auth.currentUser;
+  if(!user) return;
+  const pn = $('pn'), tx = $('tx');
+  if(!pn || !tx) return err("Veuillez renseigner votre numéro et l'ID de transaction.");
+  try {
+    await addDoc(collection(fs, "users", user.uid, "recs"), {
+      a: T.amt, m, pn, tx, t: D(), s: "En attente", ts: Date.now()
+    });
+    alert("✅ Votre demande de recharge a été soumise avec succès !");
+    go("histRec");
+  } catch(e) { err(e.message); }
+};
+
+window.doWd = async function(){
+  const user = auth.currentUser;
+  if(!user) return;
+  const a = Number($('a')), pn = $('pn');
+  if(!a || a < 1000) return err("Le montant minimum de retrait est de 1 000 F.");
+  if(!pn) return err("Veuillez entrer votre numéro de paiement.");
+  try {
+    await runTransaction(fs, async t => {
+      const uRef = doc(fs, "users", user.uid);
+      const uSnap = await t.get(uRef);
+      const curBal = uSnap.data().bal || 0;
+      if (curBal < a) throw new Error("Solde insuffisant.");
+      t.update(uRef, { bal: curBal - a });
+    });
+    await addDoc(collection(fs, "users", user.uid, "rets"), {
+      a, pn, t: D(), s: "En attente", ts: Date.now()
+    });
+    alert("✅ Demande de retrait effectuée !");
+    go("histRet");
+  } catch(e) { err(e.message); }
+};
+
+window.doLink = async function(){
+  const user = auth.currentUser;
+  if(!user) return;
+  const m = $('m'), num = $('pn');
+  if(!num) return err("Entrez un numéro valide.");
+  try {
+    await updateDoc(doc(fs, "users", user.uid), { card: { m, num } });
+    alert("✅ Compte de retrait lié avec succès !");
+    go("home");
+  } catch(e) { err(e.message); }
+};
+
+const pages={
+  signup:()=>{
+    const refCode = getUrlParam('ref') || '';
+    return `<h1>Avenir Capital</h1><p class="mu">Créez votre compte pour commencer à investir.</p>
+    <div class="card">
+      <label>Nom complet</label><input id="n">
+      <label>Numéro de téléphone</label><input id="ph" type="tel">
+      <label>Mot de passe</label><input id="pw" type="password">
+      <label>Code d'invitation (parrain)</label><input id="rf" value="${esc(refCode)}">
+      <div id="err" class="err"></div>
+      <button class="btn" onclick="signup()">S'inscrire</button>
     </div>
+    <button class="btn sec" onclick="go('login')">J'ai déjà un compte</button>`;
+  },
+  login:()=>`<h1>Avenir Capital</h1><div class="card"><label>Numéro de téléphone</label><input id="ph" type="tel"><label>Mot de passe</label><input id="pw" type="password"><div id="err" class="err"></div><button class="btn" onclick="login()">Se connecter</button></div><button class="btn sec" onclick="go('signup')">Créer un compte</button>`,
 
-    <!-- ÉCRAN PRINCIPAL (DASHBOARD) -->
-    <div id="dashboard-screen" class="hidden">
+  home:()=>{
+    const u=U();
+    const cardInfo = u.card ? `${u.card.m} - ${u.card.num}` : 'Aucun portefeuille lié';
+    return`
+      <h2>Bonjour ${esc(u.name)} 👋</h2>
+      <div class="hero">
+        <small>Solde disponible</small>
+        <b>${F(u.bal)}</b>
+      </div>
       
-      <!-- Solde -->
-      <div class="card">
-        <div class="balance-box">
-          <div>Solde actuel</div>
-          <div class="balance-amount"><span id="user-balance">0</span> FCFA</div>
+      <div class="bonus-box">
+        <h3 style="color:var(--gold);margin:0 0 6px 0">💸 Prêt Rapide 71 000 F</h3>
+        <p class="mu" style="margin:0 0 12px 0">Obtenez un prêt rapide de 71 000 F pour financer vos projets ou booster vos investissements !</p>
+        <button class="btn btn-gold btn-sm" onclick="demanderPret()">Demander un prêt</button>
+      </div>
+
+      <div class="reclamer-box">
+        <h3 style="color:var(--pr);margin:0 0 6px 0">💰 Gains Journaliers</h3>
+        <p class="mu" style="margin:0 0 12px 0">Récupérez vos revenus des sacs actifs chaque jour en FCFA</p>
+        <button id="btn-reclamer" class="btn btn-sm" onclick="reclamerMesGains()" ${!hasGainsAvailable ? 'disabled' : ''}>
+          ${hasGainsAvailable ? '🔓 Réclamer mes gains' : '🔒 En attente...'}
+        </button>
+        <div id="gain-msg" class="err" style="margin-top:8px">
+          ${hasGainsAvailable ? '✨ Des gains sont disponibles !' : '⏰ Revenez demain matin pour réclamer'}
         </div>
       </div>
 
-      <!-- Navigation -->
-      <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('plans')">Investir</button>
-        <button class="tab-btn" onclick="switchTab('deposit')">Dépôt</button>
-        <button class="tab-btn" onclick="switchTab('withdraw')">Retrait</button>
+      <div class="grid">
+        <button onclick="go('recharge')">➕<br>Recharger</button>
+        <button onclick="go('withdraw')">💸<br>Retirer</button>
+        <button onclick="go('invest')">📈<br>Investir</button>
+        <button onclick="go('team')">👥<br>Parrainage</button>
       </div>
+      <button class="li" onclick="go('card')">💳 Portefeuille de retrait (${cardInfo}) <span>›</span></button>
+      <button class="li" onclick="go('team')">👥 Mon équipe & Parrainage <span>›</span></button>
+      <button class="li" onclick="go('achats')">📦 Mes sacs achetés <span>›</span></button>
+      <button class="li" onclick="go('histRec')">Historique des recharges <span>›</span></button>
+      <button class="li" onclick="go('histRet')">Historique des retraits <span>›</span></button>
+      <button class="li" onclick="go('service')">Service client & Groupe <span>›</span></button>
 
-      <!-- SECTION PLANS D'INVESTISSEMENT -->
-      <div id="tab-plans" class="card">
-        <h2>Offres d'investissement</h2>
-        <div class="plans-grid">
-          <div class="plan-card">
-            <div class="plan-info">
-              <h3>Plan Bronze</h3>
-              <p>Investissement : 5 000 FCFA</p>
-              <p>Gains : +500 FCFA / jour</p>
-            </div>
-            <button class="btn plan-btn" onclick="invest(5000)">Souscrire</button>
-          </div>
-
-          <div class="plan-card">
-            <div class="plan-info">
-              <h3>Plan Argent</h3>
-              <p>Investissement : 10 000 FCFA</p>
-              <p>Gains : +1 200 FCFA / jour</p>
-            </div>
-            <button class="btn plan-btn" onclick="invest(10000)">Souscrire</button>
-          </div>
-
-          <div class="plan-card">
-            <div class="plan-info">
-              <h3>Plan Or</h3>
-              <p>Investissement : 25 000 FCFA</p>
-              <p>Gains : +3 500 FCFA / jour</p>
-            </div>
-            <button class="btn plan-btn" onclick="invest(25000)">Souscrire</button>
-          </div>
-        </div>
+      <div style="margin-top: 24px; margin-bottom: 20px;">
+        <button class="btn out" onclick="logout()">Se déconnecter</button>
       </div>
+    `;
+  },
 
-      <!-- SECTION DÉPÔT -->
-      <div id="tab-deposit" class="card hidden">
-        <h2>Faire un dépôt</h2>
-        <form id="deposit-form">
-          <div class="form-group">
-            <label for="deposit-method">Moyen de paiement</label>
-            <select id="deposit-method">
-              <option value="wave">Wave</option>
-              <option value="mtn">MTN Mobile Money</option>
-              <option value="moov">Moov Money</option>
-              <option value="orange">Orange Money</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="deposit-amount">Montant (FCFA)</label>
-            <input type="number" id="deposit-amount" min="1000" placeholder="Ex: 5000" required>
-          </div>
-          <button type="submit" class="btn">Valider le dépôt</button>
-        </form>
-      </div>
+  invest:()=>`${back()}<h2>Investir</h2>`+VIP.map((v,i)=>`<div class="card">
+    <img src="${v.img}" alt="${v.n}" class="prod-img">
+    <div class="row"><b>${v.n}</b><b>${F(v.p)}</b></div>
+    <p class="mu">Gain journalier : ${F(v.d)} · Durée : ${v.days} jours</p>
+    <p class="mu">Revenu total : ${F(v.total)} (Bénéfice : ${F(v.benef)})</p>
+    <button class="btn" onclick="buy(${i})">Acheter ce sac</button>
+  </div>`).join(""),
 
-      <!-- SECTION RETRAIT -->
-      <div id="tab-withdraw" class="card hidden">
-        <h2>Demander un retrait</h2>
-        <form id="withdraw-form">
-          <div class="form-group">
-            <label for="withdraw-method">Moyen de réception</label>
-            <select id="withdraw-method">
-              <option value="wave">Wave</option>
-              <option value="mtn">MTN Mobile Money</option>
-              <option value="moov">Moov Money</option>
-              <option value="orange">Orange Money</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="withdraw-phone">Numéro de réception</label>
-            <input type="tel" id="withdraw-phone" placeholder="Numéro Mobile Money" required>
-          </div>
-          <div class="form-group">
-            <label for="withdraw-amount">Montant (FCFA)</label>
-            <input type="number" id="withdraw-amount" min="1000" placeholder="Ex: 2000" required>
-          </div>
-          <button type="submit" class="btn">Demander le retrait</button>
-        </form>
-      </div>
+  recharge:()=>`${back()}<h2>Recharger</h2><div class="card"><p class="mu">Entrez le montant à recharger (Min. 1 000 F)</p><input id="a" type="number" placeholder="Ex: 10000"><div id="err" class="err"></div><button class="btn" onclick="toMethod()">Continuer</button></div>`,
 
-      <!-- Historique -->
-      <div class="card">
-        <h2>Historique des transactions</h2>
-        <div id="transaction-history">
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Aucune transaction pour le moment.</p>
-        </div>
-      </div>
+  method:()=>`${back()}<h2>Choisir le mode de paiement</h2><div class="card"><p class="mu">Montant : <b>${F(T.amt)}</b></p>`+METH.map(m=>`<button class="btn sec" style="margin-bottom:10px;" onclick="go('payDetails',{m:'${m}'})">${m}</button>`).join("")+`</div>`,
 
-      <button class="btn btn-danger" onclick="logout()" style="margin-top: 10px;">Déconnexion</button>
+  payDetails:()=>{
+    const m = T.m;
+    let num = WAVE_NUM;
+    if(m === "Moov Money") num = MOOV_NUM;
+    if(m === "MTN Money") num = MTN_NUM;
+    return `${back('method')}<h2>Paiement via ${m}</h2>
+    <div class="card">
+      <p class="mu">Montant à envoyer :</p>
+      <div class="num" style="color:var(--pr);margin-bottom:12px">${F(T.amt)}</div>
+      <p class="mu">Envoyez l'argent sur ce numéro ${m} :</p>
+      <div class="num" style="margin-bottom:12px">${num}</div>
+      <button class="btn sec btn-sm" style="margin-bottom:14px" onclick="copyN('${num}')">📋 Copier le numéro</button>
+      <label>Votre numéro de téléphone expéditeur</label><input id="pn" type="tel" placeholder="Ex: 0700000000">
+      <label>ID de transaction / Référence</label><input id="tx" placeholder="Ex: TX12345678">
+      <div id="err" class="err"></div>
+      <button class="btn" onclick="confirmPay('${m}')">J'ai effectué le paiement</button>
+    </div>`;
+  },
 
+  withdraw:()=>{
+    const u=U();
+    const cardInfo = u.card ? `${u.card.m} (${u.card.num})` : 'Aucun portefeuille lié';
+    return `${back()}<h2>Retrait</h2>
+    <div class="card">
+      <p class="mu">Solde disponible : <b>${F(u.bal)}</b></p>
+      <p class="mu">Compte de destination : <b>${cardInfo}</b></p>
+      ${!u.card ? `<button class="btn sec" style="margin-bottom:12px" onclick="go('card')">Lier un compte de retrait d'abord</button>` : ''}
+      <label>Montant du retrait (Min. 1 000 F)</label><input id="a" type="number" placeholder="Ex: 5000">
+      <label>Confirmer votre numéro de paiement</label><input id="pn" type="tel" placeholder="Ex: 0700000000" value="${u.card ? u.card.num : ''}">
+      <div id="err" class="err"></div>
+      <button class="btn" ${!u.card ? 'disabled' : ''} onclick="doWd()">Valider le retrait</button>
+    </div>`;
+  },
+
+  card:()=>{
+    const u=U();
+    const cur = u.card || {};
+    return `${back()}<h2>Portefeuille de retrait</h2>
+    <div class="card">
+      <p class="mu">Liez votre compte Mobile Money pour recevoir vos paiements de retraits.</p>
+      <label>Moyen de paiement</label>
+      <select id="m">
+        <option ${cur.m==='Wave'?'selected':''}>Wave</option>
+        <option ${cur.m==='MTN Money'?'selected':''}>MTN Money</option>
+        <option ${cur.m==='Moov Money'?'selected':''}>Moov Money</option>
+      </select>
+      <label>Numéro de téléphone</label><input id="pn" type="tel" placeholder="Ex: 0700000000" value="${cur.num||''}">
+      <div id="err" class="err"></div>
+      <button class="btn" onclick="doLink()">Enregistrer le compte</button>
+    </div>`;
+  },
+
+  team:()=>{
+    const user = auth.currentUser;
+    const refLink = BASE_REF_LINK + "?ref=" + (user ? user.uid : '');
+    return `${back()}<h2>Mon équipe & Parrainage</h2>
+    <div class="card" style="text-align:center">
+      <p class="mu">Partagez votre lien de parrainage pour inviter des amis et gagner des commissions :</p>
+      <div style="background:var(--bg);padding:10px;border-radius:8px;font-size:13px;word-break:break-all;margin:10px 0;border:1px solid var(--bd)">${refLink}</div>
+      <button class="btn btn-sm" onclick="copyLink('${refLink}')">📋 Copier le lien de parrainage</button>
     </div>
-  </div>
+    <div class="card">
+      <h3>Statistiques d'équipe</h3>
+      <div class="row"><span class="mu">Membres invités</span><b>${teamN} filleul(s)</b></div>
+    </div>`;
+  },
 
-  <script>
-    // Données de l'utilisateur stockées localement
-    let userData = JSON.parse(localStorage.getItem('avenir_user')) || {
-      isLoggedIn: false,
-      balance: 0,
-      history: []
-    };
-
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', () => {
-      if (userData.isLoggedIn) {
-        showDashboard();
-      }
-    });
-
-    // Connexion
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      userData.isLoggedIn = true;
-      saveData();
-      showDashboard();
-    });
-
-    // Déconnexion
-    function logout() {
-      userData.isLoggedIn = false;
-      saveData();
-      document.getElementById('auth-screen').classList.remove('hidden');
-      document.getElementById('dashboard-screen').classList.add('hidden');
-    }
-
-    // Afficher le Dashboard
-    function showDashboard() {
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('dashboard-screen').classList.remove('hidden');
-      updateUI();
-    }
-
-    // Mise à jour de l'interface
-    function updateUI() {
-      document.getElementById('user-balance').innerText = userData.balance.toLocaleString();
-      renderHistory();
-    }
-
-    // Changement d'onglets
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('tab-plans').classList.add('hidden');
-      document.getElementById('tab-deposit').classList.add('hidden');
-      document.getElementById('tab-withdraw').classList.add('hidden');
-
-      if (tabName === 'plans') {
-        document.getElementById('tab-plans').classList.remove('hidden');
-        event.target.classList.add('active');
-      } else if (tabName === 'deposit') {
-        document.getElementById('tab-deposit').classList.remove('hidden');
-        event.target.classList.add('active');
-      } else if (tabName === 'withdraw') {
-        document.getElementById('tab-withdraw').classList.remove('hidden');
-        event.target.classList.add('active');
-      }
-    }
-
-    // Gestion du Dépôt
-    document.getElementById('deposit-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const amount = parseInt(document.getElementById('deposit-amount').value);
-      const method = document.getElementById('deposit-method').value;
-
-      userData.balance += amount;
-      userData.history.unshift({
-        type: 'Dépôt (' + method.toUpperCase() + ')',
-        amount: '+' + amount.toLocaleString() + ' FCFA',
-        date: new Date().toLocaleDateString()
-      });
-
-      saveData();
-      updateUI();
-      alert('Dépôt réussi de ' + amount + ' FCFA !');
-      document.getElementById('deposit-form').reset();
-    });
-
-    // Gestion du Retrait
-    document.getElementById('withdraw-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const amount = parseInt(document.getElementById('withdraw-amount').value);
-      const method = document.getElementById('withdraw-method').value;
-
-      if (amount > userData.balance) {
-        alert('Solde insuffisant !');
-        return;
-      }
-
-      userData.balance -= amount;
-      userData.history.unshift({
-        type: 'Retrait (' + method.toUpperCase() + ')',
-        amount: '-' + amount.toLocaleString() + ' FCFA',
-        date: new Date().toLocaleDateString()
-      });
-
-      saveData();
-      updateUI();
-      alert('Demande de retrait envoyée !');
-      document.getElementById('withdraw-form').reset();
-    });
-
-    // Gestion des Investissements
-    function invest(amount) {
-      if (amount > userData.balance) {
-        alert('Solde insuffisant pour souscrire à ce plan. Effectuez un dépôt.');
-        return;
-      }
-
-      userData.balance -= amount;
-      userData.history.unshift({
-        type: 'Investissement',
-        amount: '-' + amount.toLocaleString() + ' FCFA',
-        date: new Date().toLocaleDateString()
-      });
-
-      saveData();
-      updateUI();
-      alert('Souscription effectuée avec succès !');
-    }
-
-    // Affichage de l'historique
-    function renderHistory() {
-      const historyContainer = document.getElementById('transaction-history');
-      if (userData.history.length === 0) {
-        historyContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Aucune transaction pour le moment.</p>';
-        return;
-      }
-
-      historyContainer.innerHTML = userData.history.map(item => `
-        <div class="history-item">
-          <div>
-            <strong>${item.type}</strong><br>
-            <small style="color: var(--text-muted);">${item.date}</small>
-          </div>
-          <div style="font-weight: bold; color: ${item.amount.startsWith('+') ? 'var(--success)' : 'var(--danger)'};">
-            ${item.amount}
-          </div>
+  achats:()=>{
+    return `${back()}<h2>Mes sacs achetés</h2>` + (buys.length ? buys.map(b=>{
+      const maxDays = b.days;
+      const daysPaid = b.daysPaid || 0;
+      const progress = Math.min(100, Math.round((daysPaid / maxDays) * 100));
+      const isActive = daysPaid < maxDays;
+      return `<div class="card">
+        <div class="row"><b>${b.n}</b><span class="tag">${isActive ? 'Actif (' + daysPaid + '/' + maxDays + ' jours)' : 'Terminé'}</span></div>
+        <p class="mu" style="margin-top:6px">Investissement : ${F(b.p)} · Gain/jour : ${F(b.d)}</p>
+        <div style="background:var(--bg);border-radius:8px;overflow:hidden;height:8px;margin-top:10px;border:1px solid var(--bd)">
+          <div style="background:var(--pr);width:${progress}%;height:100%"></div>
         </div>
-      `).join('');
-    }
+      </div>`;
+    }).join("") : `<p class="mu">Vous n'avez acheté aucun sac pour le moment.</p>`);
+  },
 
-    // Sauvegarde Locale
-    function saveData() {
-      localStorage.setItem('avenir_user', JSON.stringify(userData));
-    }
-  </script>
+  histRec:()=>`${back()}<h2>Historique des recharges</h2>`+hist(recs,"Aucune recharge enregistrée."),
+  histRet:()=>`${back()}<h2>Historique des retraits</h2>`+hist(rets,"Aucun retrait enregistré."),
+
+  service:()=>`${back()}<h2>Service client & Communauté</h2>
+  <div class="card" style="text-align:center">
+    <p class="mu" style="margin-bottom:14px">Besoin d'assistance ou d'aide avec vos transactions ? Contactez notre support officiel sur WhatsApp.</p>
+    <a href="${SUPPORT}" target="_blank" class="btn btn-wa">💬 Contacter le support WhatsApp</a>
+    <a href="${WA_GROUP}" target="_blank" class="btn sec" style="margin-top:8px;display:block">📢 Rejoindre le groupe WhatsApp</a>
+  </div>`
+};
+
+function render(){
+  const app=document.getElementById("app"),nav=document.getElementById("nav");
+  if(!auth.currentUser){
+    app.innerHTML=(pages[P]&&P!=="home")?pages[P]():pages.login();
+    nav.innerHTML="";
+    return;
+  }
+  app.innerHTML=pages[P]?pages[P]():pages.home();
+  nav.innerHTML=`
+    <button class="${P==='home'?'on':''}" onclick="go('home')"><span>🏠</span>Accueil</button>
+    <button class="${P==='invest'?'on':''}" onclick="go('invest')"><span>📈</span>Investir</button>
+    <button class="${P==='team'?'on':''}" onclick="go('team')"><span>👥</span>Équipe</button>
+    <button class="${P==='achats'?'on':''}" onclick="go('achats')"><span>📦</span>Sacs</button>
+  `;
+}
+
+onAuthStateChanged(auth,u=>{
+  unsubs.forEach(fn=>fn());unsubs=[];
+  if(u){
+    unsubs.push(onSnapshot(doc(fs,"users",u.uid),d=>{
+      ud=d.exists()?d.data():{name:"Utilisateur",bal:0};
+      render();
+      checkAndUpdateButton();
+    }));
+    unsubs.push(onSnapshot(collection(fs,"users",u.uid,"recs"),s=>{
+      recs=s.docs.map(x=>x.data());if(P==="histRec")render();
+    }));
+    unsubs.push(onSnapshot(collection(fs,"users",u.uid,"rets"),s=>{
+      rets=s.docs.map(x=>x.data());if(P==="histRet")render();
+    }));
+    unsubs.push(onSnapshot(collection(fs,"users",u.uid,"buys"),s=>{
+      buys=s.docs.map(x=>x.data());if(P==="achats")render();
+      checkAndUpdateButton();
+    }));
+    if(P==="login"||P==="signup")P="home";
+  }else{
+    ud=null;recs=[];rets=[];buys=[];teamN=0;P="login";render();
+  }
+});
+</script>
 </body>
 </html>
