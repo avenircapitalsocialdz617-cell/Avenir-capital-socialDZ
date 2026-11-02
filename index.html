@@ -56,6 +56,9 @@ const SUPPORT="https://wa.me/message/ABZ2BRFJPVIOE1";
 const WA_GROUP="https://chat.whatsapp.com/GJkaaZhk51y0VpbNPfEbms?s=cl&p=a&mlu=4&ilr=4&iam=2";
 const BASE_REF_LINK="https://avenircapitalsocialdz617-cell.github.io/Avenir-capital-socialDZ/";
 
+// Mettez ici votre numéro de téléphone administrateur pour voir le panneau admin
+const ADMIN_PHONE = "0509302107"; 
+
 const VIP=[
   {n:"VIP1 Sac Découverte", p:5000, d:500, days:7, total:8500, benef:3500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
   {n:"VIP2 Sac Essentiel", p:10000, d:1000, days:15, total:25000, benef:15000, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80"},
@@ -73,6 +76,8 @@ const auth=getAuth(initializeApp(firebaseConfig)),fs=getFirestore();
 const em=p=>p.replace(/\D/g,"")+"@avenir.app";
 let ud=null,recs=[],rets=[],buys=[],teamN=0,unsubs=[],P="login",T={};
 let hasGainsAvailable = false;
+let allUsers = [];
+let hasSpokenWelcome = false;
 
 const U=()=>ud&&{...ud,recs,rets,buys},F=n=>Number(n||0).toLocaleString("fr-FR")+" F",D=()=>new Date().toLocaleDateString("fr-FR");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -89,12 +94,60 @@ const msg=e=>({"auth/email-already-in-use":"Ce numéro est déjà inscrit.","aut
 const back=(p="home")=>`<button class="back" onclick="go('${p}')">‹ Retour</button>`;
 const hist=(a,empty)=>a.length?a.map(x=>`<div class="card row"><div><b>${F(x.a)}</b><div class="mu">${x.m||'Retrait'} · ${x.t}</div></div><span class="tag">${x.s||"En attente"}</span></div>`).join(""):`<p class="mu">${empty}</p>`;
 
+// Synthèse vocale de bienvenue automatique
+function speakWelcome(name){
+  if(hasSpokenWelcome) return;
+  if('speechSynthesis' in window){
+    hasSpokenWelcome = true;
+    setTimeout(() => {
+      const text = `Soyez les bienvenus sur Avenir Capital, ${name || ''}. Votre plateforme d'investissement sécurisée.`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'fr-FR';
+      utterance.rate = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }, 1000);
+  }
+}
+
 window.copyN = function(num){
   navigator.clipboard.writeText(num).then(()=>alert("✅ Numéro copié !")).catch(()=>alert(num))
 };
 
 window.copyLink = function(link){
   navigator.clipboard.writeText(link).then(()=>alert("✅ Lien de parrainage copié !")).catch(()=>alert(link))
+};
+
+async function chargerAdminData(){
+  try {
+    const snap = await getDocs(collection(fs, "users"));
+    allUsers = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    render();
+  } catch(e){ console.error(e); }
+}
+
+window.validerRechargeAdmin = async function(userId, recId, montant){
+  if(!confirm("Valider cette recharge de " + F(montant) + " ?")) return;
+  try {
+    await runTransaction(fs, async t => {
+      const uRef = doc(fs, "users", userId);
+      const uSnap = await t.get(uRef);
+      const curBal = uSnap.data().bal || 0;
+      t.update(uRef, { bal: curBal + Number(montant) });
+      const recRef = doc(fs, "users", userId, "recs", recId);
+      t.update(recRef, { s: "Validé" });
+    });
+    alert("✅ Recharge validée avec succès !");
+    chargerAdminData();
+  } catch(e){ alert("Erreur : " + e.message); }
+};
+
+window.validerRetraitAdmin = async function(userId, retId){
+  if(!confirm("Marquer ce retrait comme validé/payé ?")) return;
+  try {
+    await updateDoc(doc(fs, "users", userId, "rets", retId), { s: "Validé" });
+    alert("✅ Retrait marqué comme validé !");
+    chargerAdminData();
+  } catch(e){ alert("Erreur : " + e.message); }
 };
 
 async function verifierGainsDisponibles(){
@@ -348,6 +401,11 @@ const pages={
   home:()=>{
     const u=U();
     const cardInfo = u.card ? `${u.card.m} - ${u.card.num}` : 'Aucun portefeuille lié';
+    const isAdmin = u.phone === ADMIN_PHONE;
+    
+    // Déclenchement de la voix de bienvenue passive
+    speakWelcome(u.name);
+
     return`
       <h2>Bonjour ${esc(u.name)} 👋</h2>
       <div class="hero">
@@ -355,6 +413,13 @@ const pages={
         <b>${F(u.bal)}</b>
       </div>
       
+      ${isAdmin ? `
+      <div class="card" style="border:2px solid var(--gold);background:rgba(245,158,11,0.1)">
+        <h3 style="color:var(--gold);margin:0 0 6px">👑 Panneau Administrateur</h3>
+        <p class="mu" style="margin:0 0 10px">Gérez les membres inscrits, les recharges et les retraits.</p>
+        <button class="btn btn-gold btn-sm" onclick="chargerAdminData(); go('admin')">Ouvrir le panneau admin</button>
+      </div>` : ''}
+
       <div class="bonus-box">
         <h3 style="color:var(--gold);margin:0 0 6px 0">💸 Prêt Rapide 71 000 F</h3>
         <p class="mu" style="margin:0 0 12px 0">Obtenez un prêt rapide de 71 000 F pour financer vos projets ou booster vos investissements !</p>
@@ -391,6 +456,19 @@ const pages={
     `;
   },
 
+  admin:()=>{
+    return `${back()}<h2>👑 Administration des Utilisateurs</h2>
+    <p class="mu">Liste de tous les utilisateurs enregistrés sur l'application :</p>
+    ${allUsers.length ? allUsers.map(usr => `
+      <div class="card">
+        <div class="row"><b>${esc(usr.name || 'Sans nom')}</b><span class="tag">${F(usr.bal)}</span></div>
+        <div class="mu" style="margin-top:4px">📞 Tel : ${usr.phone || 'N/A'}</div>
+        <div class="mu">Parrain : ${usr.ref || 'Aucun'}</div>
+        <div class="mu" style="font-size:11px">ID : ${usr.id}</div>
+      </div>
+    `).join('') : '<p class="mu">Chargement ou aucun utilisateur...</p>'}`;
+  },
+
   invest:()=>`${back()}<h2>Investir</h2>`+VIP.map((v,i)=>`<div class="card">
     <img src="${v.img}" alt="${v.n}" class="prod-img">
     <div class="row"><b>${v.n}</b><b>${F(v.p)}</b></div>
@@ -413,7 +491,6 @@ const pages={
       <p class="mu">Montant à envoyer :</p>
       <div class="num" style="color:var(--pr);margin-bottom:12px">${F(T.amt)}</div>
       
-      <!-- Lien de paiement Jeko -->
       <div style="background:rgba(16, 185, 129, 0.1); border: 1px solid var(--pr); border-radius:10px; padding:12px; margin-bottom:14px; text-align:center;">
         <p class="mu" style="margin-bottom:8px">Veuillez payer pour Avenir en cliquant sur le lien :</p>
         <a href="https://pay.jeko.africa/pl/4f580acc-5df9-440e-b168-6beb65823bea" target="_blank" class="btn btn-sm" style="background:var(--gold); color:#000; text-decoration:none; display:inline-block; font-weight:bold;">🔗 Ouvrir le lien de paiement Jeko</a>
@@ -524,6 +601,7 @@ function render(){
 onAuthStateChanged(auth,u=>{
   unsubs.forEach(fn=>fn());unsubs=[];
   if(u){
+    hasSpokenWelcome = false; // Réinitialise pour déclencher la voix à chaque reconnexion
     unsubs.push(onSnapshot(doc(fs,"users",u.uid),d=>{
       ud=d.exists()?d.data():{name:"Utilisateur",bal:0};
       render();
@@ -535,7 +613,7 @@ onAuthStateChanged(auth,u=>{
     unsubs.push(onSnapshot(collection(fs,"users",u.uid,"rets"),s=>{
       rets=s.docs.map(x=>x.data());if(P==="histRet")render();
     }));
-    unsubs.push(onSnapshot(collection(fs,"users",u.uid,"buys"),s=>{
+    unsubs.push(onSnapshot(collection(fs,"users",u.uid,"buyys"),s=>{
       buys=s.docs.map(x=>x.data());if(P==="achats")render();
       checkAndUpdateButton();
     }));
