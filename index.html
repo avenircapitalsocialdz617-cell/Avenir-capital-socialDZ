@@ -56,9 +56,6 @@ const SUPPORT="https://wa.me/message/ABZ2BRFJPVIOE1";
 const WA_GROUP="https://chat.whatsapp.com/GJkaaZhk51y0VpbNPfEbms?s=cl&p=a&mlu=4&ilr=4&iam=2";
 const BASE_REF_LINK="https://avenircapitalsocialdz617-cell.github.io/Avenir-capital-socialDZ/";
 
-// Mettez ici votre numéro de téléphone administrateur pour voir le panneau admin
-const ADMIN_PHONE = "0509302107"; 
-
 const VIP=[
   {n:"VIP1 Sac Découverte", p:5000, d:500, days:7, total:8500, benef:3500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
   {n:"VIP2 Sac Essentiel", p:10000, d:1000, days:15, total:25000, benef:15000, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80"},
@@ -76,8 +73,6 @@ const auth=getAuth(initializeApp(firebaseConfig)),fs=getFirestore();
 const em=p=>p.replace(/\D/g,"")+"@avenir.app";
 let ud=null,recs=[],rets=[],buys=[],teamN=0,unsubs=[],P="login",T={};
 let hasGainsAvailable = false;
-let allUsers = [];
-let hasSpokenWelcome = false;
 
 const U=()=>ud&&{...ud,recs,rets,buys},F=n=>Number(n||0).toLocaleString("fr-FR")+" F",D=()=>new Date().toLocaleDateString("fr-FR");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -94,60 +89,12 @@ const msg=e=>({"auth/email-already-in-use":"Ce numéro est déjà inscrit.","aut
 const back=(p="home")=>`<button class="back" onclick="go('${p}')">‹ Retour</button>`;
 const hist=(a,empty)=>a.length?a.map(x=>`<div class="card row"><div><b>${F(x.a)}</b><div class="mu">${x.m||'Retrait'} · ${x.t}</div></div><span class="tag">${x.s||"En attente"}</span></div>`).join(""):`<p class="mu">${empty}</p>`;
 
-// Synthèse vocale de bienvenue automatique
-function speakWelcome(name){
-  if(hasSpokenWelcome) return;
-  if('speechSynthesis' in window){
-    hasSpokenWelcome = true;
-    setTimeout(() => {
-      const text = `Soyez les bienvenus sur Avenir Capital, ${name || ''}. Votre plateforme d'investissement sécurisée.`;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'fr-FR';
-      utterance.rate = 1.0;
-      window.speechSynthesis.speak(utterance);
-    }, 1000);
-  }
-}
-
 window.copyN = function(num){
   navigator.clipboard.writeText(num).then(()=>alert("✅ Numéro copié !")).catch(()=>alert(num))
 };
 
 window.copyLink = function(link){
   navigator.clipboard.writeText(link).then(()=>alert("✅ Lien de parrainage copié !")).catch(()=>alert(link))
-};
-
-async function chargerAdminData(){
-  try {
-    const snap = await getDocs(collection(fs, "users"));
-    allUsers = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    render();
-  } catch(e){ console.error(e); }
-}
-
-window.validerRechargeAdmin = async function(userId, recId, montant){
-  if(!confirm("Valider cette recharge de " + F(montant) + " ?")) return;
-  try {
-    await runTransaction(fs, async t => {
-      const uRef = doc(fs, "users", userId);
-      const uSnap = await t.get(uRef);
-      const curBal = uSnap.data().bal || 0;
-      t.update(uRef, { bal: curBal + Number(montant) });
-      const recRef = doc(fs, "users", userId, "recs", recId);
-      t.update(recRef, { s: "Validé" });
-    });
-    alert("✅ Recharge validée avec succès !");
-    chargerAdminData();
-  } catch(e){ alert("Erreur : " + e.message); }
-};
-
-window.validerRetraitAdmin = async function(userId, retId){
-  if(!confirm("Marquer ce retrait comme validé/payé ?")) return;
-  try {
-    await updateDoc(doc(fs, "users", userId, "rets", retId), { s: "Validé" });
-    alert("✅ Retrait marqué comme validé !");
-    chargerAdminData();
-  } catch(e){ alert("Erreur : " + e.message); }
 };
 
 async function verifierGainsDisponibles(){
@@ -401,11 +348,6 @@ const pages={
   home:()=>{
     const u=U();
     const cardInfo = u.card ? `${u.card.m} - ${u.card.num}` : 'Aucun portefeuille lié';
-    const isAdmin = u.phone === ADMIN_PHONE;
-    
-    // Déclenchement de la voix de bienvenue passive
-    speakWelcome(u.name);
-
     return`
       <h2>Bonjour ${esc(u.name)} 👋</h2>
       <div class="hero">
@@ -413,13 +355,6 @@ const pages={
         <b>${F(u.bal)}</b>
       </div>
       
-      ${isAdmin ? `
-      <div class="card" style="border:2px solid var(--gold);background:rgba(245,158,11,0.1)">
-        <h3 style="color:var(--gold);margin:0 0 6px">👑 Panneau Administrateur</h3>
-        <p class="mu" style="margin:0 0 10px">Gérez les membres inscrits, les recharges et les retraits.</p>
-        <button class="btn btn-gold btn-sm" onclick="chargerAdminData(); go('admin')">Ouvrir le panneau admin</button>
-      </div>` : ''}
-
       <div class="bonus-box">
         <h3 style="color:var(--gold);margin:0 0 6px 0">💸 Prêt Rapide 71 000 F</h3>
         <p class="mu" style="margin:0 0 12px 0">Obtenez un prêt rapide de 71 000 F pour financer vos projets ou booster vos investissements !</p>
@@ -430,4 +365,45 @@ const pages={
         <h3 style="color:var(--pr);margin:0 0 6px 0">💰 Gains Journaliers</h3>
         <p class="mu" style="margin:0 0 12px 0">Récupérez vos revenus des sacs actifs chaque jour en FCFA</p>
         <button id="btn-reclamer" class="btn btn-sm" onclick="reclamerMesGains()" ${!hasGainsAvailable ? 'disabled' : ''}>
-    
+          ${hasGainsAvailable ? '🔓 Réclamer mes gains' : '🔒 En attente...'}
+        </button>
+        <div id="gain-msg" class="err" style="margin-top:8px">
+          ${hasGainsAvailable ? '✨ Des gains sont disponibles !' : '⏰ Revenez demain matin pour réclamer'}
+        </div>
+      </div>
+
+      <div class="grid">
+        <button onclick="go('recharge')">➕<br>Recharger</button>
+        <button onclick="go('withdraw')">💸<br>Retirer</button>
+        <button onclick="go('invest')">📈<br>Investir</button>
+        <button onclick="go('team')">👥<br>Parrainage</button>
+      </div>
+      <button class="li" onclick="go('card')">💳 Portefeuille de retrait (${cardInfo}) <span>›</span></button>
+      <button class="li" onclick="go('team')">👥 Mon équipe & Parrainage <span>›</span></button>
+      <button class="li" onclick="go('achats')">📦 Mes sacs achetés <span>›</span></button>
+      <button class="li" onclick="go('histRec')">Historique des recharges <span>›</span></button>
+      <button class="li" onclick="go('histRet')">Historique des retraits <span>›</span></button>
+      <button class="li" onclick="go('service')">Service client & Groupe <span>›</span></button>
+
+      <div style="margin-top: 24px; margin-bottom: 20px;">
+        <button class="btn out" onclick="logout()">Se déconnecter</button>
+      </div>
+    `;
+  },
+
+  invest:()=>`${back()}<h2>Investir</h2>`+VIP.map((v,i)=>`<div class="card">
+    <img src="${v.img}" alt="${v.n}" class="prod-img">
+    <div class="row"><b>${v.n}</b><b>${F(v.p)}</b></div>
+    <p class="mu">Gain journalier : ${F(v.d)} · Durée : ${v.days} jours</p>
+    <p class="mu">Revenu total : ${F(v.total)} (Bénéfice : ${F(v.benef)})</p>
+    <button class="btn" onclick="buy(${i})">Acheter ce sac</button>
+  </div>`).join(""),
+
+  recharge:()=>`${back()}<h2>Recharger</h2><div class="card"><p class="mu">Entrez le montant à recharger (Min. 1 000 F)</p><input id="a" type="number" placeholder="Ex: 10000"><div id="err" class="err"></div><button class="btn" onclick="toMethod()">Continuer</button></div>`,
+
+  method:()=>`${back()}<h2>Choisir le mode de paiement</h2><div class="card"><p class="mu">Montant : <b>${F(T.amt)}</b></p>`+METH.map(m=>`<button class="btn sec" style="margin-bottom:10px;" onclick="go('payDetails',{m:'${m}'})">${m}</button>`).join("")+`</div>`,
+
+  payDetails:()=>{
+    const m = T.m;
+    let num = WAVE_NUM;
+    if(m === "Moov Money") num =
